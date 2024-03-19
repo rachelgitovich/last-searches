@@ -108,7 +108,7 @@ app.get('/mostPopular', async (req, res, next) => {
       return res.status(404).send('No popular searches found');
     }
 
-    res.status(200).json({ popularSearches });
+    res.status(200).json({ mostSearched: popularSearches });
   } catch (error) {
     next(error);
   }
