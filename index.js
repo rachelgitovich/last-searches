@@ -48,10 +48,26 @@ app.get('/lastSearches', async (req, res, next) => {
     twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
 
     const searches = await Search.aggregate([
-      { $match: { userId, timestamp: { $gte: twoWeeksAgo } } },
-      { $group: { _id: "$searchPhrase", latestTimestamp: {$max: "$timestamp"} } },
-      { $sort: { latestTimestamp: 1 } },
-      { $limit: parseInt(limit) }
+      {
+        $match: {
+          userId,
+          timestamp: { $gte: twoWeeksAgo },
+        },
+      },
+      {
+        $group: {
+          _id: '$searchPhrase',
+          latestTimestamp: { $max: '$timestamp' },
+        },
+      },
+      {
+        $sort: {
+          latestTimestamp: 1,
+        },
+      },
+      {
+        $limit: parseInt(limit),
+      },
     ]);
 
     if (searches.length === 0) {
